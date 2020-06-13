@@ -10,12 +10,10 @@ import Typography from '@material-ui/core/Typography';
 import ChatBox from './ChatBox';
 import Friends from './Conversations/Friends';
 import ProfilePage from './Conversations/ProfilePage';
-
-import  Loader from "../Loader"
-
 import { connect } from 'react-redux';
 import { newChat , addMessage, openBox } from "../../actions/chatActions"
 import chatSocket from "../../utils/webSockets"
+import { tabStatus } from '../../actions/authActions';
 
 
 
@@ -51,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Chat({ auth: { loading, user , token }, chat:{chat, displayBox} , newChat , addMessage, openBox}) {
+function Chat({ auth: { loading, user , token, tabVal }, chat:{chat, displayBox} , newChat , addMessage, openBox, tabStatus}) {
   const classes = useStyles();
 
   const matches = useMediaQuery('(min-width:800px)');
@@ -61,7 +59,13 @@ function Chat({ auth: { loading, user , token }, chat:{chat, displayBox} , newCh
   const [tab, setTab] = useState(0);
 
   const handleChange = (e, newVal) => {
-    setTab(newVal);
+    if(tabVal === 0){
+      tabStatus(1);
+    }
+    else{
+      tabStatus(0);
+    }
+    
   };
 
 
@@ -83,86 +87,86 @@ function Chat({ auth: { loading, user , token }, chat:{chat, displayBox} , newCh
   }
 console.log(loading)
   return (
-    <React.Fragment>
-   {loading ?
-     (<Loader />):
-     (
-      <React.Fragment>
-      {matches ? (
-        <Grid container className={classes.root}>
-          <Grid item md={4} className={classes.sidebar}>
-            <Paper className={classes.paper} square elevation={5}>
-              <Paper square elevation={5} className={classes.tabs}>
-                <Tabs
-                  onChange={handleChange}
-                  variant="fullWidth"
-                  value={tab}
-                  indicatorColor="primary"
-                  textColor="primary"
-                  className={classes.tabs}
-                >
-                  <Tab label="Chats" className={classes.labels} />
-                  <Tab label="Profile" className={classes.labels} />
-                </Tabs>
-              </Paper>
-              {tab === 0 && <Friends openChat={openChat} />}
-              {tab === 1 && <ProfilePage />}
-            </Paper>
-          </Grid>
-          <Grid item md={8}>
-            {showChat ? (
-              <ChatBox otherUser={otherUser} chat={chat} showChat={showChat} />
-            ) : (
-              <React.Fragment>
-                <Grid item xs={12}>
-                  <Typography variant="h3" className={classes.contentTitleFull}>
-                    Welcome to Piper Chat!
-                  </Typography>
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography
-                    variant="subtitle1"
-                    className={classes.contentFull}
-                  >
-                    Click on any of your conversations to open a chat...
-                  </Typography>
-                </Grid>
-              </React.Fragment>
-            )}
-          </Grid>
-        </Grid>
-      ) : (
-        <Grid container className={classes.root}>
-          <Paper className={classes.paper} square elevation={5}>
-            {showChat && displayBox ? (
-              <ChatBox otherUser={otherUser} chat={chat} />
-            ) : (
-              <React.Fragment>
-                <Paper square elevation={5} className={classes.tabs}>
-                  <Tabs
-                    onChange={handleChange}
-                    variant="fullWidth"
-                    value={tab}
-                    indicatorColor="primary"
-                    textColor="primary"
-                    className={classes.tabs}
-                  >
-                    <Tab label="Chats" className={classes.labels} />
-                    <Tab label="Profile" className={classes.labels} />
-                  </Tabs>
+        <React.Fragment>
+          {matches ? (
+            <Grid container className={classes.root}>
+              <Grid item md={4} className={classes.sidebar}>
+                <Paper className={classes.paper} square elevation={5}>
+                  <Paper square elevation={5} className={classes.tabs}>
+                    <Tabs
+                      onChange={handleChange}
+                      variant="fullWidth"
+                      value={tabVal}
+                      indicatorColor="primary"
+                      textColor="primary"
+                      className={classes.tabs}
+                    >
+                      <Tab label="Chats" className={classes.labels} />
+                      <Tab label="Profile" className={classes.labels} />
+                    </Tabs>
+                  </Paper>
+                  {tabVal === 0 && <Friends openChat={openChat} />}
+                  {tabVal === 1 && <ProfilePage />}
                 </Paper>
-                {tab === 0 && <Friends openChat={openChat} />}
-                {tab === 1 && <ProfilePage />}
-              </React.Fragment>
-            )}
-          </Paper>
-        </Grid>
-      )}
-    </React.Fragment>
-     )
-   }
-    </React.Fragment>
-  );
+              </Grid>
+              <Grid item md={8}>
+                {showChat ? (
+                  <ChatBox
+                    otherUser={otherUser}
+                    chat={chat}
+                    showChat={showChat}
+                  />
+                ) : (
+                  <React.Fragment>
+                    <Grid item xs={12}>
+                      <Typography
+                        variant="h3"
+                        className={classes.contentTitleFull}
+                      >
+                        Welcome to Piper Chat!
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Typography
+                        variant="subtitle1"
+                        className={classes.contentFull}
+                      >
+                        Click on any of your conversations to open a chat...
+                      </Typography>
+                    </Grid>
+                  </React.Fragment>
+                )}
+              </Grid>
+            </Grid>
+          ) : (
+            <Grid container className={classes.root}>
+              <Paper className={classes.paper} square elevation={5}>
+                {showChat && displayBox ? (
+                  <ChatBox otherUser={otherUser} chat={chat} />
+                ) : (
+                  <React.Fragment>
+                    <Paper square elevation={5} className={classes.tabs}>
+                      <Tabs
+                        onChange={handleChange}
+                        variant="fullWidth"
+                        value={tabVal}
+                        indicatorColor="primary"
+                        textColor="primary"
+                        className={classes.tabs}
+                      >
+                        <Tab label="Chats" className={classes.labels} />
+                        <Tab label="Profile" className={classes.labels} />
+                      </Tabs>
+                    </Paper>
+                    {tabVal === 0 && <Friends openChat={openChat} />}
+                    {tabVal === 1 && <ProfilePage />}
+                  </React.Fragment>
+                )}
+              </Paper>
+            </Grid>
+          )}
+        </React.Fragment>
+      )
 }
 
 const mapStateToProps = (state) => {
@@ -171,4 +175,4 @@ const mapStateToProps = (state) => {
     chat: state.chat
   };
 };
-export default connect(mapStateToProps, { newChat , addMessage, openBox})(Chat);
+export default connect(mapStateToProps, { newChat , addMessage, openBox, tabStatus})(Chat);

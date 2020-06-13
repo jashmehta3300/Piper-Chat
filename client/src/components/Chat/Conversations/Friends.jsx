@@ -2,6 +2,7 @@ import React,{useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import List from '@material-ui/core/List';
+import Paper from '@material-ui/core/Paper';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -46,6 +47,13 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'flex-end',
   },
+  loaderPaper: {
+    padding: theme.spacing(4),
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '60vh',
+  },
   form: {
     width: '100%',
     backgroundColor: 'white',
@@ -78,42 +86,55 @@ const Friends = ({fetchUsers,users,openChat}) => {
   return (
     <Grid container className={classes.root}>
       <List dense className={classes.list}>
-        {users ?
-        users.map((element,value) => {
-          const labelId = `checkbox-list-secondary-label-${value}`;
-          return (
-            <React.Fragment key={value}>
-              {matches? (<ListItem  className={classes.listItemBig} onClick={()=>openChat(element)} >
-                <ListItemAvatar>
-                  <Avatar
-                    alt={`Avatar n°${value + 1}`}
-                    src={`/static/images/avatar/${value + 1}.jpg`}
-                  />
-                </ListItemAvatar>
-                <ListItemText id={labelId} primary={element.name} />
-                <ListItemSecondaryAction>
-                  <DeleteIcon color="primary" />
-                </ListItemSecondaryAction>
-              </ListItem>
-              ): (<ListItem  className={classes.listItemSmall} onClick={()=>openChat(element)} >
-                <ListItemAvatar>
-                  <Avatar
-                    alt={`Avatar n°${value + 1}`}
-                    src={`/static/images/avatar/${value + 1}.jpg`}
-                  />
-                </ListItemAvatar>
-                <ListItemText id={labelId} primary={element.name} />
-                <ListItemSecondaryAction>
-                  <DeleteIcon color="primary" />
-                </ListItemSecondaryAction>
-              </ListItem>
-              )}
-              <Divider variant="inset" component="li" />
-            </React.Fragment>
-          );
-        })
-        :(<Loader />)
-      }
+        {users ? (
+          users.map((element, value) => {
+            const labelId = `checkbox-list-secondary-label-${value}`;
+            return (
+              <React.Fragment key={value}>
+                {matches ? (
+                  <ListItem
+                    className={classes.listItemBig}
+                    onClick={() => openChat(element)}
+                  >
+                    <ListItemAvatar>
+                      <Avatar
+                        alt={`Avatar n°${value + 1}`}
+                        src={`/static/images/avatar/${value + 1}.jpg`}
+                      />
+                    </ListItemAvatar>
+                    <ListItemText id={labelId} primary={element.name} />
+                    <ListItemSecondaryAction>
+                      <DeleteIcon color="primary" />
+                    </ListItemSecondaryAction>
+                  </ListItem>
+                ) : (
+                  <ListItem
+                    className={classes.listItemSmall}
+                    onClick={() => openChat(element)}
+                  >
+                    <ListItemAvatar>
+                      <Avatar
+                        alt={`Avatar n°${value + 1}`}
+                        src={`/static/images/avatar/${value + 1}.jpg`}
+                      />
+                    </ListItemAvatar>
+                    <ListItemText id={labelId} primary={element.name} />
+                    <ListItemSecondaryAction>
+                      <DeleteIcon color="primary" />
+                    </ListItemSecondaryAction>
+                  </ListItem>
+                )}
+                <Divider variant="inset" component="li" />
+              </React.Fragment>
+            );
+          })
+        ) : (
+          <Grid item xs={12}>
+            <Paper className={classes.loaderPaper} elevation={0}>
+              <Loader />
+            </Paper>
+          </Grid>
+        )}
       </List>
     </Grid>
   );

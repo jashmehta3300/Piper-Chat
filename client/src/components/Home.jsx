@@ -13,11 +13,8 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import {connect} from "react-redux";
 import {Redirect} from "react-router-dom";
-import { useState } from 'react';
 import Loader from './Loader';
 import Paper from '@material-ui/core/Paper';
-
-
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -73,6 +70,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
     alignItems: 'center',
     height: '60vh',
+    marginTop: '15vh'
   },
 }));
 
@@ -261,14 +259,30 @@ if(loggedIn){
       )}
     </div>):
     (
-      <Grid item xs={12}>
-        <Paper className={classes.loaderPaper} elevation={0}>
-          <Loader />
-        </Paper>
-      </Grid>
+      <div className={classes.root}>
+      <CssBaseline />
+      <AppBar position="static" styles={{ xIndex: '1' }}>
+        <Toolbar>
+          <Grid container>
+            <Grid item xs={12}>
+              <Typography className={classes.title}>Piper Chat</Typography>
+            </Grid>
+          </Grid>
+        </Toolbar>
+      </AppBar>
+      <Container maxWidth="sm">
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <Paper className={classes.loaderPaper} elevation={0}>
+                <Loader />
+              </Paper>
+            </Grid>
+          </Grid>
+      </Container>
+      </div>
     )
-            }
-          </div>
+    }
+  </div>
   )
 }
 

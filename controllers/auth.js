@@ -51,7 +51,6 @@ exports.sendInvite = async (req, res, next) =>{
   const resetUrl = `http://localhost:3000/register/${emailId}`
 
   const message = `Hey, your invite has been accepted! \n\nJoin the Piper Chat now and start enjoy secure and reliable messaging. You can sign up using the url below: \n\n${resetUrl}`
-console.log(message)
   try {
     await sendEmail({
       email: emailId,
@@ -69,8 +68,6 @@ console.log(message)
       runValidators: true,
       upsert:false
     });
-    console.log("Inviterd")
-    console.log(invite)
 
     res.status(200).json({ success: true, data: 'Email sent', user: invite });
   } catch (err) {

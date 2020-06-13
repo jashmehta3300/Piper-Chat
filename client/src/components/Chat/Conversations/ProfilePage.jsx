@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: '#2196f3',
     height: '30vh',
   },
-  loaderPaper: {
+  loaderPaper: { 
     padding: theme.spacing(4),
     display: 'flex',
     justifyContent: 'center',
@@ -107,7 +107,7 @@ function ProfilePage({
     if (user) {
       setTimeout(() => {
         setLoading(false);
-      }, 2500);
+      }, 2000);
     }
   }, [user]);
 
@@ -122,11 +122,10 @@ function ProfilePage({
     e.preventDefault();
     const Token = localStorage.getItem('token');
     updateUser({ name: values.name, email: values.email, token: Token });
-   
+    handleClick()
   };
 
   const handleClick = (e) => {
-    e.preventDefault();
     tabStatus(0);
   };
 
@@ -160,8 +159,8 @@ function ProfilePage({
                 <DoneIcon
                   fontSize="large"
                   className={classes123.successIcon}
-                  onClick={handleClick}
-                />
+                  onClick={submitHandler}
+                />  
               </Grid>
             </Toolbar>
             <Grid item xs={12} className={classes.pic}>

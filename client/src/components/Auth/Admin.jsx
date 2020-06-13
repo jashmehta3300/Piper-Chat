@@ -7,7 +7,6 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import { toast } from 'react-toastify';
 import { connect } from 'react-redux';
 import { loadUser, adminRoute } from '../../actions/authActions';
 import Loader from '../Loader';
@@ -60,33 +59,6 @@ function Admin({ auth : {user , loading}, adminRoute}) {
     by: '',
   });
 
- 
-
-  function notify(text, type) {
-    switch (type) {
-      case 'info':
-        toast.info(`${text}`, {
-          position: 'top-center',
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-        });
-        break;
-      case 'error':
-        toast.error(`${text}`, {
-          position: 'top-center',
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-        });
-        break;
-      default: break
-    }
-  }
 
   const handleChange = (prop) => (event) => {
     setValues({
