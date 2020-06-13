@@ -173,13 +173,8 @@ function Layout({auth:{loggedIn,user},logout,children}) {
             <Grid item xs={6} sm={2}>
               <Typography className={classes.title}>Piper Chat</Typography>
             </Grid>
-            <Grid item xs={1} sm={2}>
-              
+            <Grid item xs={1} sm={2}>             
             </Grid>
-            <Grid item xs={4} sm={2}>
-  <Typography className={classes.username}>Welcome,{user?`${user.name}`:null}</Typography>
-            </Grid>
-
           </Grid>
           {loggedIn ? (
             <Fragment>
